@@ -41,7 +41,10 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ env.TF_VERSION }}
-      
+
+      - name: Create Terraform Plugin Cache Directory
+        run: mkdir -p ~/.terraform.d/plugin-cache
+
       - name: Cache Terraform Plugins
         uses: actions/cache@v4
         with:
@@ -77,13 +80,21 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: |
-          terraform plan -no-color -input=false | tee plan.txt
+          terraform plan -out=tfplan
+          terraform show -no-color tfplan > plan.txt
         env:
           ARM_CLIENT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }}
           ARM_CLIENT_SECRET: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}
           ARM_TENANT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).tenantId }}
           ARM_SUBSCRIPTION_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).subscriptionId }}
       
+      - name: Upload Terraform Plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan
+          path: |
+            tfplan
+            plan.txt
 
       # Posts the plan directly on the PR so reviewers see it inline
       # instead of digging through Actions logs.
@@ -133,6 +144,10 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ env.TF_VERSION }}
+
+      - name: Create Terraform Plugin Cache Directory
+        run: mkdir -p ~/.terraform.d/plugin-cache
+
       - name: Cache Terraform Plugins
         uses: actions/cache@v4
         with:
@@ -159,14 +174,18 @@ jobs:
           ARM_TENANT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).tenantId }}
           ARM_SUBSCRIPTION_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).subscriptionId }}
 
+      - name: Download Terraform Plan
+        uses: actions/download-artifact@v4
+        with:
+          name: terraform-plan
+
       - name: Terraform Apply
-        run: terraform apply -auto-approve -input=false
+        run: terraform apply -auto-approve -input=false tfplan
         env:
           ARM_CLIENT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }}
           ARM_CLIENT_SECRET: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}
           ARM_TENANT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).tenantId }}
           ARM_SUBSCRIPTION_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).subscriptionId }}
-
       - name: Terraform Output
         run: terraform output
         env:
