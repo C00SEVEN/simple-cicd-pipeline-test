@@ -36,7 +36,7 @@ resource "azurerm_subnet" "this" {
 
 resource "azurerm_subnet" "this2" {
 
-  name = var.subnet_name
+  name = var.subnet_name2
 
   resource_group_name = azurerm_resource_group.this.name
 

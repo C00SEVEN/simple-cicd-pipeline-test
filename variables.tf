@@ -40,7 +40,15 @@ variable "subnet_name" {
   default = "snet-workloads"
 
 }
+variable "subnet_name2" {
 
+  description = "Subnet name"
+
+  type = string
+
+  default = "snet-jumpbox"
+
+}
 
 variable "address_space" {
 
