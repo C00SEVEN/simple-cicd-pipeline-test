@@ -4,7 +4,7 @@ variable "location" {
 
   type = string
 
-  default = "southafricanorth"
+  default = "westeurope"
 
 }
 
@@ -40,15 +40,6 @@ variable "subnet_name" {
   default = "snet-workloads"
 
 }
-variable "subnet_name2" {
-
-  description = "Subnet name"
-
-  type = string
-
-  default = "snet-jumpbox"
-
-}
 
 variable "address_space" {
 
@@ -71,13 +62,3 @@ variable "subnet_prefix" {
 
 }
 
-
-variable "subnet_prefix2" {
-
-  type = list(string)
-
-  default = [
-    "10.10.2.0/24"
-  ]
-
-}
