@@ -56,6 +56,23 @@ jobs:
       - name: Terraform Format Check
         run: terraform fmt -check -recursive
 
+      - name: Install TFLint
+        run: |
+          curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+
+      - name: Run TFLint
+        run: |
+          tflint --init
+          tflint
+
+      - name: Install Checkov
+        run: |
+          pip install checkov
+
+      - name: Run Checkov Security Scan
+        run: |
+          checkov -d . --framework terraform
+
       - name: Azure Login
         uses: azure/login@v2
         with:
