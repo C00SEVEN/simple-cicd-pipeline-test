@@ -68,7 +68,7 @@ variable "subnet_prefix" {
   type = list(string)
 
   default = [
-    "10.10.100.0/24"
+    "10.10.150.0/24"
   ]
 
 }
@@ -78,7 +78,7 @@ variable "subnet_prefix2" {
   type = list(string)
 
   default = [
-    "10.10.200.0/24"
+    "10.10.250.0/24"
   ]
 
 }
