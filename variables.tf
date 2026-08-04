@@ -62,3 +62,14 @@ variable "subnet_prefix" {
   ]
 
 }
+
+
+variable "subnet_prefix2" {
+
+  type = list(string)
+
+  default = [
+    "10.10.2.0/24"
+  ]
+
+}
