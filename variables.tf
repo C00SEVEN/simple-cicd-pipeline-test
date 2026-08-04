@@ -41,6 +41,17 @@ variable "subnet_name" {
 
 }
 
+
+variable "subnet_name2" {
+
+  description = "Subnet name"
+
+  type = string
+
+  default = "snet-workloads2"
+
+}
+
 variable "address_space" {
 
   type = list(string)
@@ -62,3 +73,12 @@ variable "subnet_prefix" {
 
 }
 
+variable "subnet_prefix2" {
+
+  type = list(string)
+
+  default = [
+    "10.10.2.0/24"
+  ]
+
+}
